@@ -9,7 +9,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { getStorage , ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 const FirebaseContext = createContext(null);
@@ -70,6 +70,13 @@ export const FirebaseProvider = ({ children }) => {
     });
   };
 
+  const allBooks = () => {
+    return getDocs(collection(firestore, 'books'));
+  }
+  const getBookImage = (path) => {
+    return getDownloadURL(ref(storage, path));
+  }
+
 
 
 
@@ -89,7 +96,7 @@ export const FirebaseProvider = ({ children }) => {
 
   return (
     <FirebaseContext.Provider
-      value={{ signUp, signIn, signInWithGoogle, isLoggedIn,logout, addBook }}
+      value={{ signUp, signIn, signInWithGoogle, isLoggedIn,logout, addBook,allBooks,getBookImage }}
     >
       {children}
     </FirebaseContext.Provider>
