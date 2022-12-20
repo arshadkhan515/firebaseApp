@@ -4,9 +4,12 @@ import App from "./App";
 import { ColorSchemeProvider, MantineProvider, Text } from "@mantine/core";
 import { FirebaseProvider } from "./context/Firebase";
 import { BrowserRouter } from "react-router-dom";
+import { NotificationsProvider } from "@mantine/notifications";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
+   <NotificationsProvider position="top-right" zIndex={2077}>
+
     <ColorSchemeProvider
     >
       <MantineProvider withGlobalStyles withNormalizeCSS>
@@ -15,5 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </FirebaseProvider>
       </MantineProvider>
     </ColorSchemeProvider>
+   </NotificationsProvider>
+
   </BrowserRouter>
 );

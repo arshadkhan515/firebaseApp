@@ -99,6 +99,9 @@ import { useFirebase } from '../context/Firebase';
               <NavLink to="book/list" className={classes.link}>
                 Books
               </NavLink>
+              <NavLink to="book/orders" className={classes.link}>
+                Orders
+              </NavLink>
             </Group>
   
             <Group className={classes.hiddenMobile}>

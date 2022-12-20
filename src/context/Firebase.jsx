@@ -9,8 +9,17 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
-import { getStorage , ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const FirebaseContext = createContext(null);
 
@@ -34,10 +43,8 @@ const firestore = getFirestore(app);
 // firebase Storage Initialize
 const storage = getStorage(app);
 
-
 // useFirebase hook for accessing firebase context
 export const useFirebase = () => useContext(FirebaseContext);
-
 
 // FirebaseProvider for wrapping the app with firebase context provider
 export const FirebaseProvider = ({ children }) => {
@@ -51,10 +58,11 @@ export const FirebaseProvider = ({ children }) => {
         setUser(null);
       }
     });
+    // console.log("Firebase Initialized");
   }, []);
 
   // FireStore Methods
-  const addBook = async(book) => {
+  const addBook = async (book) => {
     const { name, price, image, ISBN } = book;
     const imageRef = ref(storage, `images/upload/${Date.now()}-${image.name}`);
     const uploadResult = await uploadBytes(imageRef, image);
@@ -63,23 +71,43 @@ export const FirebaseProvider = ({ children }) => {
       price,
       ISBN,
       imageUrl: uploadResult.ref.fullPath,
-      userId : User.uid,
-      userEmail : User.email,
-      displayName : User.displayName,
-      photoURL : User.photoURL,
+      userId: User.uid,
+      userEmail: User.email,
+      displayName: User.displayName,
+      photoURL: User.photoURL,
     });
   };
 
   const allBooks = () => {
-    return getDocs(collection(firestore, 'books'));
-  }
+    return getDocs(collection(firestore, "books"));
+  };
   const getBookImage = (path) => {
     return getDownloadURL(ref(storage, path));
-  }
+  };
+  const getBook = (id) => {
+    return getDoc(doc(firestore, "books", id));
+  };
 
+  // ordered Methods
+  const addOrdered = (id, quantity) => {
+    const orderCollection = collection(firestore, "books", id, "orders");
+    return addDoc(orderCollection, {
+      userId: User.uid,
+      userEmail: User.email,
+      displayName: User.displayName,
+      photoURL: User.photoURL,
+      quantity: Number(quantity),
+    });
+  };
 
+  const fetchOrders = async() => {
+     if (!User) return;
 
-
+    const collectionRef = collection(firestore, "books");
+    const  q = query(collectionRef, where("userId", "==", User.uid));
+    const response = await getDocs(q);
+    return response;
+  };
 
   // For Firebase Authentication Methods
   const signUp = (email, password) => {
@@ -96,7 +124,19 @@ export const FirebaseProvider = ({ children }) => {
 
   return (
     <FirebaseContext.Provider
-      value={{ signUp, signIn, signInWithGoogle, isLoggedIn,logout, addBook,allBooks,getBookImage }}
+      value={{
+        signUp,
+        signIn,
+        signInWithGoogle,
+        isLoggedIn,
+        logout,
+        addBook,
+        allBooks,
+        getBookImage,
+        getBook,
+        addOrdered,
+        fetchOrders,
+      }}
     >
       {children}
     </FirebaseContext.Provider>

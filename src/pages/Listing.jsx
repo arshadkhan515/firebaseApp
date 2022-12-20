@@ -19,6 +19,8 @@ import { useFirebase } from "../context/Firebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import NavBar from "../components/NavBar";
+import { showNotification } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons";
 
 export function Listing() {
   const Firebase = useFirebase();
@@ -45,8 +47,20 @@ export function Listing() {
     try {
       const response = await Firebase.addBook(form.values);
       console.log(response);
+        showNotification({
+          title: 'Book Added',
+          icon : <IconCheck/>,
+          color : "teal",
+          message: 'Please Check Your Dashboard 👌',
+        })
     } catch (error) {
       console.log(error);
+      showNotification({
+        title: 'Something Went Wrong',
+        icon : <IconX/>,
+        color : "red",
+        message: 'Please Try Again Later 👌',
+      })
     }
     setLoadingBtn(false);
   };

@@ -1,11 +1,12 @@
 import { createStyles, Card, Image, ActionIcon, Group, Text, Avatar, Badge, Skeleton, Button } from '@mantine/core';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFirebase } from '../context/Firebase';
 
 const useStyles = createStyles((theme) => ({
     card: {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-        width : '300px'
+        width: "300px",
     },
 
     title: {
@@ -47,12 +48,12 @@ export function BooksCard({
     photoURL,
     displayName,
     userEmail,
-    price
+    price,id,detail
 }) {
     const firebase = useFirebase();
     const [url, setUrl] = useState(null);
     const [isLoadingImage, setLoadingImage] = useState(true);
-
+    const navigate = useNavigate();
     const getUrl = async () => {
         setLoadingImage(true);
         try {
@@ -71,7 +72,7 @@ export function BooksCard({
     const { classes, theme } = useStyles();
     return (
         <Skeleton m="lg" radius="md" className={classes.card} visible={isLoadingImage}>
-            <Card withBorder p="lg" radius="md" className={classes.card}>
+            <Card withBorder p="lg" radius="md" className={classes.card} shadow="lg">
                 <Card.Section mb="sm">
                     <Skeleton visible={isLoadingImage}>
                         <Image src={url} alt={name} height={180} />
@@ -102,10 +103,10 @@ export function BooksCard({
                                 per unit
                             </Text>
                         </div>
+        {!detail && <Button radius="xl" style={{ flex: 1 }} onClick={() => navigate(`/book/${id}`)}>
+                            View Book
+                        </Button>}
 
-                        <Button radius="xl" style={{ flex: 1 }}>
-                            Rent now
-                        </Button>
                     </Group>
                 </Card.Section>
             </Card>

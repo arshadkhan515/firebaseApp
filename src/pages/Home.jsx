@@ -14,7 +14,7 @@ const Home = () => {
     try {
       const response = await firebase.allBooks();
       setBooks(response.docs);
-      console.log(response.docs[0].data());
+      console.log(response.docs);
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +30,7 @@ const Home = () => {
       <NavBar />
       <Flex justify="space-around" align="center" wrap='wrap' w="100%" h="80vh">
         { isLoading ? <Loader/> : books.map((book,i) => (
-            <BooksCard {...book.data()} key={i} />
+            <BooksCard {...book.data()} key={i} id={book.id}/>
           )) }
       </Flex>
     </>
