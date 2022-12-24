@@ -96,10 +96,10 @@ import { useFirebase } from '../context/Firebase';
               <NavLink to="/" className={classes.link}>
                 Home
               </NavLink>
-              <NavLink to="book/list" className={classes.link}>
-                Books
+              <NavLink to="/book/list" className={classes.link}>
+                Add Book
               </NavLink>
-              <NavLink to="book/orders" className={classes.link}>
+              <NavLink to="/book/orders" className={classes.link}>
                 Orders
               </NavLink>
             </Group>

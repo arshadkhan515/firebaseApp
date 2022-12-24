@@ -14,7 +14,6 @@ const Home = () => {
     try {
       const response = await firebase.allBooks();
       setBooks(response.docs);
-      console.log(response.docs);
     } catch (error) {
       console.log(error);
     }

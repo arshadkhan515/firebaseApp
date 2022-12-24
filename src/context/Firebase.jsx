@@ -99,15 +99,19 @@ export const FirebaseProvider = ({ children }) => {
       quantity: Number(quantity),
     });
   };
-
-  const fetchOrders = async() => {
-     if (!User) return;
-
+  const fetchMyBooks = async(uid) => {
     const collectionRef = collection(firestore, "books");
-    const  q = query(collectionRef, where("userId", "==", User.uid));
+    const  q = query(collectionRef, where("userId", "==", uid));
     const response = await getDocs(q);
     return response;
   };
+  const getMyOrders = async (id) => {
+    const orderCollection = collection(firestore, "books", id, "orders");
+    const response = await getDocs(orderCollection);
+    return response;
+  };
+
+
 
   // For Firebase Authentication Methods
   const signUp = (email, password) => {
@@ -125,6 +129,7 @@ export const FirebaseProvider = ({ children }) => {
   return (
     <FirebaseContext.Provider
       value={{
+        User,
         signUp,
         signIn,
         signInWithGoogle,
@@ -135,7 +140,8 @@ export const FirebaseProvider = ({ children }) => {
         getBookImage,
         getBook,
         addOrdered,
-        fetchOrders,
+        fetchMyBooks,
+        getMyOrders,
       }}
     >
       {children}

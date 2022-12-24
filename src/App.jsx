@@ -2,11 +2,11 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom';
 import AuthWrap from './auth/AuthWrap';
 import GuestWrap from './auth/GuestWrap';
-import { useFirebase } from './context/Firebase'
 import Detail from './pages/Detail';
 import Home from './pages/Home';
 import { Listing } from './pages/Listing';
 import { Login } from './pages/Login';
+import OrderList from './pages/OrderList';
 import { Register } from './pages/Register';
 import ViewOrders from './pages/ViewOrders';
 
@@ -31,6 +31,11 @@ const App = () => {
        <Route path='/book/orders' element={
         <AuthWrap>
           <ViewOrders/>
+        </AuthWrap>
+        }/>
+       <Route path='/book/order/:id' element={
+        <AuthWrap>
+          <OrderList/>
         </AuthWrap>
         }/>
        <Route path='/login' element={
