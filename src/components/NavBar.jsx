@@ -123,15 +123,15 @@ import { useFirebase } from '../context/Firebase';
         >
           <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
             <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-            <a href="#" className={classes.link}>
-              Home
-            </a>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
+            <NavLink to="/" className={classes.link}>
+                Home
+              </NavLink>
+              <NavLink to="/book/list" className={classes.link}>
+                Add Book
+              </NavLink>
+              <NavLink to="/book/orders" className={classes.link}>
+                Orders
+              </NavLink>
   
             <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
   
